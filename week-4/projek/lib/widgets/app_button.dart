@@ -4,47 +4,61 @@ import 'package:url_launcher/url_launcher.dart';
 class AppButton extends StatelessWidget {
   final String label;
   final IconData? icon;
-
+  final String url;
+  final double height;
+  final double borderRadius;
   final VoidCallback? onPressed;
-  final String? url;
 
   const AppButton({
     super.key,
     required this.label,
     this.icon,
+    required this.url,
+    required this.height,
+    required this.borderRadius,
     this.onPressed,
-    this.url,
   });
 
   Future<void> _handlePressed() async {
     if (onPressed != null) {
       onPressed!();
-    } else if (url != null) {
-      final uri = Uri.parse(url!);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri);
-      }
+      return;
+    }
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      await launchUrl(uri);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      height: height,
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: (onPressed != null || url != null) ? _handlePressed : null,
+        onPressed: _handlePressed,
         style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(borderRadius),
           ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (icon != null) ...[Icon(icon), const SizedBox(width: 8)],
-            Text(label),
+            if (icon != null) ...[
+              Icon(icon),
+              const SizedBox(width: 8),
+            ],
+            Flexible(
+              child: Text(
+                label,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
       ),

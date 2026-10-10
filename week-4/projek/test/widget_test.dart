@@ -5,31 +5,41 @@ import 'package:projek/main.dart';
 import 'package:projek/widgets/app_button.dart';
 
 void main() {
-  testWidgets('HomePage renders elements correctly', (WidgetTester tester) async {
+  testWidgets('ProfilePage renders identity and GitHub button correctly', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
 
-    expect(find.text('Design System Demo'), findsOneWidget);
-    expect(find.text('Universitas Esa Unggul'), findsOneWidget);
-    expect(find.text('Pergi ke GMAPS'), findsOneWidget);
-    expect(find.byIcon(Icons.location_on), findsOneWidget);
+    expect(find.text('Personal Profile Card'), findsOneWidget);
+    expect(find.text('Muhammad Amizola Rahmandani'), findsOneWidget);
+    expect(find.text('20240801083'), findsOneWidget);
+    expect(find.text('Teknik Informatika'), findsOneWidget);
+    expect(
+      find.text('Mahasiswa yang tertarik dengan web development pada ui/ux dan frontend'),
+      findsOneWidget,
+    );
+    expect(find.text('Kunjungi GitHub Saya'), findsOneWidget);
+    expect(find.byType(Card), findsOneWidget);
+    expect(find.byType(CircleAvatar), findsOneWidget);
   });
 
-  testWidgets('AppButton renders label and calls onPressed', (WidgetTester tester) async {
+  testWidgets('AppButton renders label, icon, and calls onPressed', (WidgetTester tester) async {
     bool pressed = false;
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
           body: AppButton(
-            label: 'Click Me',
-            icon: Icons.touch_app,
+            label: 'Kunjungi GitHub',
+            icon: Icons.code,
+            url: 'https://github.com/Mizola21',
+            height: 43,
+            borderRadius: 7,
             onPressed: () => pressed = true,
           ),
         ),
       ),
     );
 
-    expect(find.text('Click Me'), findsOneWidget);
-    expect(find.byIcon(Icons.touch_app), findsOneWidget);
+    expect(find.text('Kunjungi GitHub'), findsOneWidget);
+    expect(find.byIcon(Icons.code), findsOneWidget);
     await tester.tap(find.byType(AppButton));
     expect(pressed, isTrue);
   });
