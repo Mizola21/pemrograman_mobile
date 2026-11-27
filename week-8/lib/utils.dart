@@ -1,0 +1,9 @@
+import 'package:flutter/material.dart';
+
+void showMessage(BuildContext context, String text) {
+  ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
+    ..showSnackBar(SnackBar(content: Text(text)));
+}
+
+String errorText(Object e) => e.toString().replaceFirst('Exception: ', '');
